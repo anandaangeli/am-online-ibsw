@@ -1,14 +1,14 @@
 <aside class="sidebar">
     <div class="sidebar-header">
         <div class="brand-title">
-            <i class="bi bi-buildings-fill text-primary"></i>
-            <span>AM ONLINE</span>
+            <img src="{{ asset('images/ibsw.png') }}" alt="IBS Logo" style="height: 30px; width: auto;" class="me-1">
+            <span style="font-weight: 800; color: #ffffff; letter-spacing: -0.3px;">AM ONLINE</span>
         </div>
         <div class="brand-sub">PT Infrastruktur Bisnis Sejahtera</div>
     </div>
 
     <div class="sidebar-user">
-        <div class="user-avatar">
+        <div class="user-avatar" style="background-color: #e61037;">
             {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
         </div>
         <div style="overflow: hidden;">
@@ -28,14 +28,8 @@
             </li>
             <li>
                 <a href="{{ route('budget-request.index') }}" class="nav-item-link {{ request()->routeIs('budget-request.*') ? 'active' : '' }}">
-                    <i class="bi bi-receipt"></i>
-                    <span>Budget Request</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('cash-advance.index') }}" class="nav-item-link {{ request()->routeIs('cash-advance.*') ? 'active' : '' }}">
-                    <i class="bi bi-wallet2"></i>
-                    <span>Cash Advance</span>
+                    <i class="bi bi-file-earmark-text"></i>
+                    <span>Pengajuan AM</span>
                 </a>
             </li>
             <li>

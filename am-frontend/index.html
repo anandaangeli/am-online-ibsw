@@ -3,86 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - AM Online</title>
+    <title>Login - AM Online IBS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="login-wrapper">
-    <div class="login-card">
-        <div class="brand-header">
-            <div class="brand-icon">
-                <i class="bi bi-buildings-fill"></i>
-            </div>
-            <div class="brand-title">AM ONLINE</div>
-            <div class="brand-desc">Budget Request & Cash Advance System</div>
-            <span class="badge-hris">
-                <i class="bi bi-shield-lock-fill"></i> HRIS IBSW Portal
-            </span>
-        </div>
+<div class="login-page-wrapper">
+    <div class="login-container">
+        <div class="login-card">
+            {{-- Solid Brand Accent Top Line (No Gradient) --}}
+            <div class="login-card-stripe"></div>
 
-        <div id="alertBox" class="alert d-none custom-alert" role="alert">
-            <i id="alertIcon" class="bi bi-exclamation-triangle-fill fs-5"></i>
-            <div id="alertMsg" class="flex-grow-1"></div>
-        </div>
+            <div class="login-card-body">
+                {{-- Brand Header --}}
+                <div class="login-brand-header">
+                    <div class="login-logo-container">
+                        <img src="ibsw.png" alt="IBS Logo" class="login-logo-img">
+                    </div>
 
-        <form id="formLogin" novalidate>
-            <div class="form-floating mb-3">
-                <input type="text" 
-                       class="form-control" 
-                       id="username" 
-                       name="username" 
-                       placeholder="NIK atau Email Karyawan" 
-                       required 
-                       autofocus>
-                <label for="username">
-                    <i class="bi bi-person me-1"></i> NIK Karyawan
-                </label>
-                <div class="invalid-feedback text-start">
-                    Harap masukkan NIK karyawan.
+                    <div class="login-brand-title">
+                        <span class="login-brand-main">IBS</span>
+                        <span class="login-brand-sub">AM Online</span>
+                    </div>
+
+                    <p class="login-eyebrow">Dokumen AM & Cash Advance</p>
+                    <p class="login-subtitle">
+                        Masuk ke portal HRIS IBSW untuk mengelola pengajuan Dokumen AM & kas bon operasional
+                    </p>
                 </div>
-            </div>
 
-            <div class="input-password-wrapper mb-4">
-                <div class="form-floating">
-                    <input type="password" 
-                           class="form-control" 
-                           id="password" 
-                           name="password" 
-                           placeholder="Password" 
-                           required>
-                    <label for="password">
-                        <i class="bi bi-key me-1"></i> Password
-                    </label>
-                    <div class="invalid-feedback text-start">
-                        Harap masukkan password.
+                {{-- Alert Notification --}}
+                <div id="alertBox" class="d-none" role="alert">
+                    <i id="alertIcon" class="login-alert-icon"></i>
+                    <div id="alertMsg" class="flex-grow-1"></div>
+                </div>
+
+                {{-- Login Form --}}
+                <form id="formLogin" novalidate>
+                    {{-- Username / NIK / Email --}}
+                    <div class="login-form-group">
+                        <label class="login-label" for="username">
+                            NIK atau Email Karyawan <span class="text-danger">*</span>
+                        </label>
+                        <div class="login-input-wrapper">
+                            <span class="login-input-icon">
+                                <i class="bi bi-person"></i>
+                            </span>
+                            <input 
+                                type="text" 
+                                class="login-input" 
+                                id="username" 
+                                name="username" 
+                                placeholder="Masukkan NIK atau email kantor" 
+                                required 
+                                autofocus 
+                                autocomplete="username"
+                            >
+                        </div>
+                    </div>
+
+                    {{-- Password --}}
+                    <div class="login-form-group">
+                        <label class="login-label" for="password">
+                            Kata Sandi <span class="text-danger">*</span>
+                        </label>
+                        <div class="login-input-wrapper">
+                            <span class="login-input-icon">
+                                <i class="bi bi-key"></i>
+                            </span>
+                            <input 
+                                type="password" 
+                                class="login-input" 
+                                id="password" 
+                                name="password" 
+                                placeholder="Masukkan kata sandi" 
+                                required 
+                                autocomplete="current-password"
+                            >
+                            <button 
+                                type="button" 
+                                class="login-password-toggle" 
+                                id="togglePasswordBtn" 
+                                title="Lihat kata sandi" 
+                                tabindex="-1"
+                            >
+                                <i class="bi bi-eye" id="eyeIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    {{-- Submit Button --}}
+                    <button type="submit" class="login-submit-button" id="btnSubmit">
+                        <span class="login-spinner d-none" id="btnSpinner"></span>
+                        <span id="btnText">
+                            <span>Masuk ke Sistem</span>
+                            <i class="bi bi-arrow-right ms-1"></i>
+                        </span>
+                    </button>
+                </form>
+
+                {{-- User Info Box (Success state) --}}
+                <div id="userInfoBox" class="user-info-box d-none">
+                    <div class="fw-bold text-success mb-2 d-flex align-items-center gap-2">
+                        <i class="bi bi-check-circle-fill"></i> Autentikasi Berhasil
+                    </div>
+                    <div id="userDetails" class="small text-muted"></div>
+                </div>
+
+                {{-- Quick Testing Accounts Section --}}
+                <div class="login-demo-section">
+                    <button type="button" class="login-demo-toggle" id="demoToggleBtn">
+                        <span>Pilih Akun Uji Coba Cepat</span>
+                        <span class="login-demo-badge" id="demoToggleBadge">Lihat Akun Demo ▼</span>
+                    </button>
+
+                    <div class="login-demo-grid d-none" id="demoGrid">
+                        <div class="login-demo-pill" data-user="20160163" data-pass="password">
+                            <span class="login-demo-role">Supervisor (IT & SAP)</span>
+                            <span class="login-demo-name">Tiopan Indra Wahyudi</span>
+                        </div>
+                        <div class="login-demo-pill" data-user="admin" data-pass="admin123">
+                            <span class="login-demo-role">Administrator</span>
+                            <span class="login-demo-name">Admin Testing IBS</span>
+                        </div>
+                        <div class="login-demo-pill" data-user="test.requester@ibs.test" data-pass="password">
+                            <span class="login-demo-role">Requester (SCM)</span>
+                            <span class="login-demo-name">Fajar Nugraha</span>
+                        </div>
+                        <div class="login-demo-pill" data-user="test.asisten@ibs.test" data-pass="password">
+                            <span class="login-demo-role">Asisten Kadiv (L1)</span>
+                            <span class="login-demo-name">Dwi Handayani, S.T.</span>
+                        </div>
+                        <div class="login-demo-pill" data-user="test.kadiv@ibs.test" data-pass="password">
+                            <span class="login-demo-role">Kadiv SCM (L2)</span>
+                            <span class="login-demo-name">Hendro Prasetyo, S.T.</span>
+                        </div>
+                        <div class="login-demo-pill" data-user="test.accounting@ibs.test" data-pass="password">
+                            <span class="login-demo-role">Accounting (L3)</span>
+                            <span class="login-demo-name">Bambang Sudarsono, S.E.</span>
+                        </div>
                     </div>
                 </div>
-                <button type="button" class="btn-toggle-eye" id="togglePasswordBtn" aria-label="Toggle password">
-                    <i class="bi bi-eye" id="eyeIcon"></i>
-                </button>
             </div>
-
-            <button type="submit" class="btn btn-submit" id="btnSubmit">
-                <span class="spinner-border spinner-border-sm d-none" id="btnSpinner" role="status" aria-hidden="true"></span>
-                <span id="btnText"><i class="bi bi-box-arrow-in-right me-1"></i> Masuk</span>
-            </button>
-        </form>
-
-        <div id="userInfoBox" class="user-info-box d-none mt-3">
-            <h6 class="fw-bold mb-2 text-success"><i class="bi bi-check-circle-fill me-1"></i> Login Berhasil</h6>
-            <div id="userDetails" class="small text-muted"></div>
         </div>
-    </div>
 
-    <div class="login-footer">
-        <p class="mb-1">&copy; 2026 PT Infrastruktur Bisnis Sejahtera</p>
-        <p class="mb-0">AM Online System</p>
+        {{-- Footer --}}
+        <div class="login-footer">
+            <p class="login-footer-text">
+                &copy; 2026 PT Infrastruktur Bisnis Sejahtera Tbk. All rights reserved.
+            </p>
+            <div class="login-footer-security">
+                <i class="bi bi-shield-check"></i> Enkripsi TLS 1.3 Terverifikasi
+            </div>
+        </div>
     </div>
 </div>
 

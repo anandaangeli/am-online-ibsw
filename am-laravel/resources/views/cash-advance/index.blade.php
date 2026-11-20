@@ -34,7 +34,7 @@
     .brand-sub { font-size: 10.5px; color: #64748b; margin-top: 2px; }
 
     .sidebar-user { padding: 12px 16px; background-color: #141e33; border-bottom: 1px solid #1e293b; display: flex; align-items: center; gap: 10px; }
-    .user-avatar { width: 32px; height: 32px; border-radius: 50%; background-color: #2563eb; color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; flex-shrink: 0; }
+    .user-avatar { width: 32px; height: 32px; border-radius: 50%; background-color: #e61037; color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; flex-shrink: 0; }
     .user-name { font-size: 12.5px; font-weight: 600; color: #f1f5f9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
     .user-role { font-size: 11px; color: #94a3b8; }
 
@@ -45,7 +45,7 @@
     .nav-item-link { display: flex; align-items: center; gap: 9px; padding: 8px 12px; color: #94a3b8; text-decoration: none; font-size: 12.5px; font-weight: 500; border-radius: 6px; transition: all 0.15s ease; }
     .nav-item-link i { font-size: 14px; width: 18px; text-align: center; }
     .nav-item-link:hover { background-color: #1e293b; color: #f8fafc; }
-    .nav-item-link.active { background-color: #2563eb; color: #ffffff; font-weight: 600; }
+    .nav-item-link.active { background-color: #e61037; color: #ffffff; font-weight: 600; }
     .sidebar-bottom { padding: 12px; background-color: #090d16; border-top: 1px solid #1e293b; }
 
     .main-wrapper { margin-left: 220px; min-height: 100vh; width: calc(100% - 220px); display: flex; flex-direction: column; }
@@ -69,6 +69,8 @@
 
     .btn-xs { font-size: 11.5px; padding: 3px 8px; border-radius: 4px; font-weight: 500; }
     .btn-create { font-size: 12.5px; font-weight: 600; padding: 6px 14px; border-radius: 5px; }
+    .btn-primary { background-color: #e61037; border-color: #e61037; }
+    .btn-primary:hover, .btn-primary:focus { background-color: #d00e31; border-color: #d00e31; }
 </style>
 @endsection
 
@@ -96,15 +98,50 @@
             </div>
         @endif
 
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show py-2 px-3 mb-3" style="font-size: 12.5px;" role="alert">
+                <strong>Gagal:</strong>
+                <ul class="mb-0 ps-3">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close py-2" data-bs-dismiss="alert" aria-label="Tutup"></button>
+            </div>
+        @endif
+
+        @if(!$hasApprovedAm)
+            <div class="alert alert-warning py-3 px-3 mb-3 d-flex align-items-start gap-2" style="font-size: 12.5px;" role="alert">
+                <i class="bi bi-exclamation-triangle-fill fs-5 text-warning flex-shrink-0 mt-1"></i>
+                <div>
+                    <strong>Perhatian Kebijakan AM:</strong> Pembuatan <strong>Cash Advance (Kas Bon)</strong> mewajibkan adanya <strong>Dokumen AM yang telah Disetujui (Approved)</strong> terlebih dahulu sebagai nomor referensi anggaran. Saat ini Anda belum memiliki Dokumen AM yang disetujui, sehingga tombol pembuatan Cash Advance dinonaktifkan.
+                    <div class="mt-2">
+                        <a href="{{ route('budget-request.index') }}" class="btn btn-danger btn-sm py-1 px-2" style="font-size: 11.5px;">
+                            <i class="bi bi-arrow-right-circle me-1"></i> Ajukan Dokumen AM Sekarang
+                        </a>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         <div class="page-header-box">
             <div>
                 <h1 class="page-title"><i class="bi bi-wallet2 text-warning me-2"></i>Pengajuan Cash Advance (Kas Bon)</h1>
-                <div class="page-subtitle">Daftar permohonan uang muka operasional, dinas luar kota, dan keperluan tugas kantor</div>
+                <div class="page-subtitle">Daftar permohonan uang muka operasional yang berbasis pada Dokumen AM resmi</div>
             </div>
-            <div>
-                <button type="button" class="btn btn-primary btn-create" data-bs-toggle="modal" data-bs-target="#modalTambahCA">
-                    <i class="bi bi-plus-lg me-1"></i> Buat Cash Advance
-                </button>
+            <div class="d-flex align-items-center gap-2">
+                <a href="{{ route('budget-request.index') }}" class="btn btn-outline-danger btn-create" style="font-size: 12px;">
+                    <i class="bi bi-file-earmark-text me-1"></i> Pilih dari List AM
+                </a>
+                @if($hasApprovedAm)
+                    <button type="button" class="btn btn-primary btn-create" data-bs-toggle="modal" data-bs-target="#modalTambahCA">
+                        <i class="bi bi-plus-lg me-1"></i> Buat Cash Advance
+                    </button>
+                @else
+                    <button type="button" class="btn btn-secondary btn-create" disabled title="Wajib memiliki Dokumen AM yang Disetujui terlebih dahulu">
+                        <i class="bi bi-lock-fill me-1"></i> Buat Cash Advance (Perlu AM)
+                    </button>
+                @endif
             </div>
         </div>
 
@@ -115,6 +152,7 @@
                         <tr>
                             <th style="width: 40px;">No</th>
                             <th>No. Dokumen</th>
+                            <th>Ref Dokumen AM</th>
                             @if($isLeader)
                                 <th>Pemohon</th>
                             @endif
@@ -131,6 +169,15 @@
                             <tr>
                                 <td class="text-muted">{{ $index + 1 }}</td>
                                 <td><strong>{{ $req->doc_number }}</strong></td>
+                                <td>
+                                    @if($req->am_reference)
+                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1" style="font-size: 11px;">
+                                            <i class="bi bi-file-earmark-check me-1"></i>{{ $req->am_reference }}
+                                        </span>
+                                    @else
+                                        <span class="text-muted" style="font-size: 11px;">-</span>
+                                    @endif
+                                </td>
                                 @if($isLeader)
                                     <td>
                                         <div class="fw-semibold">{{ $req->user->name ?? '-' }}</div>
@@ -213,6 +260,20 @@
                 @csrf
                 <input type="hidden" name="type" value="Cash Advance">
                 <div class="modal-body p-3">
+                    <div class="mb-2">
+                        <label class="form-label fw-bold" style="font-size: 12px;">Referensi Dokumen AM: <span class="text-danger">*</span></label>
+                        <select class="form-select form-select-sm" name="am_reference" required>
+                            <option value="" disabled selected>-- Pilih Dokumen AM yang Disetujui --</option>
+                            @foreach($availableAms as $am)
+                                <option value="{{ $am->doc_number }}">
+                                    {{ $am->doc_number }} &bull; {{ $am->title }} (Rp {{ number_format($am->amount, 0, ',', '.') }})
+                                </option>
+                            @endforeach
+                        </select>
+                        <div class="form-text" style="font-size: 11px; color: #64748b;">
+                            Wajib memilih Dokumen AM yang telah Disetujui sebagai dasar pengajuan Kas Bon ini.
+                        </div>
+                    </div>
                     <div class="mb-2">
                         <label class="form-label fw-bold" style="font-size: 12px;">Kategori:</label>
                         <select class="form-select form-select-sm" name="category" required>

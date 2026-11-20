@@ -18,8 +18,9 @@ class BudgetRequestSeeder extends Seeder
         if ($tiopan) {
             $requests = [
                 [
-                    'doc_number' => 'BR-2026-0001',
-                    'type' => 'Budget Request',
+                    'doc_number' => 'AM-2026-0001',
+                    'type' => 'AM',
+                    'am_reference' => null,
                     'title' => 'Pengadaan Server Cloud AWS & Lisensi Docker Enterprise Q1',
                     'category' => 'IT & Software',
                     'amount' => 24500000.00,
@@ -31,6 +32,7 @@ class BudgetRequestSeeder extends Seeder
                 [
                     'doc_number' => 'CA-2026-0002',
                     'type' => 'Cash Advance',
+                    'am_reference' => 'AM-2026-0001',
                     'title' => 'Perjalanan Dinas Implementasi HRIS Regional Surabaya',
                     'category' => 'Perjalanan Dinas',
                     'amount' => 6800000.00,
@@ -40,8 +42,9 @@ class BudgetRequestSeeder extends Seeder
                     'created_at' => now()->subDays(6),
                 ],
                 [
-                    'doc_number' => 'BR-2026-0003',
-                    'type' => 'Budget Request',
+                    'doc_number' => 'AM-2026-0003',
+                    'type' => 'AM',
+                    'am_reference' => null,
                     'title' => 'Upgrade RAM & SSD Laptop Tim IT Development',
                     'category' => 'Operational',
                     'amount' => 12300000.00,
@@ -53,6 +56,7 @@ class BudgetRequestSeeder extends Seeder
                 [
                     'doc_number' => 'CA-2026-0004',
                     'type' => 'Cash Advance',
+                    'am_reference' => 'AM-2026-0001',
                     'title' => 'Uang Muka Operasional Maintenance Jaringan Kantor Pusat',
                     'category' => 'Operational',
                     'amount' => 3500000.00,

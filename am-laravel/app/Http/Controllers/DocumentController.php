@@ -10,7 +10,7 @@ class DocumentController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $isLeader = in_array(strtolower($user->role), ['supervisor', 'super admin', 'admin']);
+        $isLeader = BudgetRequestController::isApprover($user);
         
         $query = $isLeader ? BudgetRequest::with('user') : BudgetRequest::where('user_id', $user->id);
         

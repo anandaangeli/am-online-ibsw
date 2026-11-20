@@ -20,12 +20,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // Menu Budget Request
-    Route::get('/budget-request', [BudgetRequestController::class, 'index'])->name('budget-request.index');
-    Route::post('/budget-request', [BudgetRequestController::class, 'store'])->name('budget-request.store');
+    // Menu Pengajuan AM (Anggaran Manajemen)
+    Route::get('/am', [BudgetRequestController::class, 'index'])->name('budget-request.index');
+    Route::get('/budget-request', function() {
+        return redirect()->route('budget-request.index');
+    });
+    Route::post('/am', [BudgetRequestController::class, 'store'])->name('budget-request.store');
+    Route::post('/budget-request', [BudgetRequestController::class, 'store']);
 
-    // Menu Cash Advance
-    Route::get('/cash-advance', [CashAdvanceController::class, 'index'])->name('cash-advance.index');
+    // Menu Cash Advance dialihkan ke Semua Dokumen / AM
+    Route::get('/cash-advance', function () {
+        return redirect()->route('all-documents.index');
+    })->name('cash-advance.index');
 
     // Menu Semua Dokumen
     Route::get('/all-documents', [DocumentController::class, 'index'])->name('all-documents.index');

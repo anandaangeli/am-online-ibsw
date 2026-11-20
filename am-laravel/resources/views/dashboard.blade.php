@@ -65,7 +65,7 @@
         width: 32px;
         height: 32px;
         border-radius: 50%;
-        background-color: #2563eb;
+        background-color: #e61037;
         color: #ffffff;
         display: flex;
         align-items: center;
@@ -140,7 +140,7 @@
     }
 
     .nav-item-link.active {
-        background-color: #2563eb;
+        background-color: #e61037;
         color: #ffffff;
         font-weight: 600;
     }
@@ -258,7 +258,7 @@
     <header class="top-header">
         <div>
             <strong>Portal HRIS IBSW</strong>
-            <span class="text-muted ms-2">&bull; &nbsp;Budget Request & Cash Advance System</span>
+            <span class="text-muted ms-2">&bull; &nbsp;Dokumen AM & Cash Advance System</span>
         </div>
         <div class="text-secondary">
             <i class="bi bi-calendar3 me-1"></i> {{ date('l, d F Y') }}

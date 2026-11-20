@@ -13,6 +13,7 @@ class BudgetRequest extends Model
         'user_id',
         'doc_number',
         'type',
+        'am_reference',
         'title',
         'category',
         'amount',
@@ -28,5 +29,15 @@ class BudgetRequest extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function cashAdvances()
+    {
+        return $this->hasMany(BudgetRequest::class, 'am_reference', 'doc_number');
+    }
+
+    public function latestCashAdvance()
+    {
+        return $this->hasOne(BudgetRequest::class, 'am_reference', 'doc_number')->latestOfMany();
     }
 }

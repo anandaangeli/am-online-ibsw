@@ -1,5 +1,6 @@
 services:
   app:
+    image: tugasformlogin-app:latest
     build:
       context: ./am-laravel
       dockerfile: Dockerfile

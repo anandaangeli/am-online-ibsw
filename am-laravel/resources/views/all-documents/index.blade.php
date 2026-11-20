@@ -34,7 +34,7 @@
     .brand-sub { font-size: 10.5px; color: #64748b; margin-top: 2px; }
 
     .sidebar-user { padding: 12px 16px; background-color: #141e33; border-bottom: 1px solid #1e293b; display: flex; align-items: center; gap: 10px; }
-    .user-avatar { width: 32px; height: 32px; border-radius: 50%; background-color: #2563eb; color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; flex-shrink: 0; }
+    .user-avatar { width: 32px; height: 32px; border-radius: 50%; background-color: #e61037; color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; flex-shrink: 0; }
     .user-name { font-size: 12.5px; font-weight: 600; color: #f1f5f9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
     .user-role { font-size: 11px; color: #94a3b8; }
 
@@ -45,7 +45,7 @@
     .nav-item-link { display: flex; align-items: center; gap: 9px; padding: 8px 12px; color: #94a3b8; text-decoration: none; font-size: 12.5px; font-weight: 500; border-radius: 6px; transition: all 0.15s ease; }
     .nav-item-link i { font-size: 14px; width: 18px; text-align: center; }
     .nav-item-link:hover { background-color: #1e293b; color: #f8fafc; }
-    .nav-item-link.active { background-color: #2563eb; color: #ffffff; font-weight: 600; }
+    .nav-item-link.active { background-color: #e61037; color: #ffffff; font-weight: 600; }
     .sidebar-bottom { padding: 12px; background-color: #090d16; border-top: 1px solid #1e293b; }
 
     .main-wrapper { margin-left: 220px; min-height: 100vh; width: calc(100% - 220px); display: flex; flex-direction: column; }
@@ -102,7 +102,7 @@
         <div class="page-header-box">
             <div>
                 <h1 class="page-title"><i class="bi bi-folder2-open text-primary me-2"></i>Daftar Semua Dokumen AM</h1>
-                <div class="page-subtitle">Seluruh riwayat pengajuan Budget Request dan Cash Advance dalam sistem</div>
+                <div class="page-subtitle">Seluruh riwayat pengajuan Dokumen AM dan Cash Advance dalam sistem</div>
             </div>
             <div>
                 <span class="badge bg-light text-dark border px-3 py-2" style="font-size: 12px;">
@@ -134,12 +134,21 @@
                         @forelse($requests as $index => $req)
                             <tr>
                                 <td class="text-muted">{{ $index + 1 }}</td>
-                                <td><strong>{{ $req->doc_number }}</strong></td>
+                                <td>
+                                    <strong>{{ $req->doc_number }}</strong>
+                                    @if($req->am_reference)
+                                        <div class="mt-1">
+                                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-1" style="font-size: 10px;">
+                                                Ref AM: {{ $req->am_reference }}
+                                            </span>
+                                        </div>
+                                    @endif
+                                </td>
                                 <td>
                                     @if($req->type === 'Cash Advance')
                                         <span class="type-badge type-ca">Cash Advance</span>
                                     @else
-                                        <span class="type-badge type-br">Budget Request</span>
+                                        <span class="type-badge type-br">Dokumen AM</span>
                                     @endif
                                 </td>
                                 @if($isLeader)
@@ -149,9 +158,16 @@
                                     </td>
                                 @endif
                                 <td>
-                                    <div class="fw-semibold">{{ $req->title }}</div>
+                                    <div class="fw-semibold text-dark">{{ $req->title }}</div>
                                     @if($req->description)
                                         <div class="text-muted" style="font-size: 11px;">{{ Str::limit($req->description, 40) }}</div>
+                                    @endif
+                                    @if($req->status === 'Pending')
+                                        <div class="mt-1">
+                                            <span class="badge bg-light text-muted border px-1" style="font-size: 10px;">
+                                                <i class="bi bi-hourglass me-1"></i> Menunggu Persetujuan
+                                            </span>
+                                        </div>
                                     @endif
                                 </td>
                                 <td>{{ $req->category }}</td>
@@ -174,12 +190,16 @@
                                             Lihat
                                         </button>
 
-                                        @if($isLeader && $req->status === 'Pending')
+                                        @php 
+                                            $canApproveDoc = \App\Http\Controllers\BudgetRequestController::canApproveDocument($user, $req);
+                                        @endphp
+
+                                        @if($canApproveDoc)
                                             <form action="{{ route('budget-requests.update-status', $req->id) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('PATCH')
                                                 <input type="hidden" name="status" value="Approved">
-                                                <button type="submit" class="btn btn-success btn-xs">
+                                                <button type="submit" class="btn btn-success btn-xs" title="Setujui dokumen ini">
                                                     Setujui
                                                 </button>
                                             </form>
@@ -276,7 +296,7 @@
     }
 
     function bukaDetail(req) {
-        document.getElementById('detailType').innerText = req.type || 'Budget Request';
+        document.getElementById('detailType').innerText = req.type || 'Dokumen AM';
         document.getElementById('detailDocNumber').innerText = req.doc_number;
         document.getElementById('detailUser').innerText = req.user ? (req.user.name + ' (NIK: ' + req.user.nik + ')') : '-';
         document.getElementById('detailTitle').innerText = req.title;

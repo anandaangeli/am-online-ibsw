@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('doc_number', 50)->unique();
-            $table->enum('type', ['Budget Request', 'Cash Advance'])->default('Budget Request');
+            $table->string('type', 50)->default('AM');
+            $table->string('am_reference', 50)->nullable();
             $table->string('title');
             $table->string('category', 100)->default('Operational');
             $table->decimal('amount', 15, 2);

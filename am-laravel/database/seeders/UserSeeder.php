@@ -13,16 +13,16 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. User Karyawan (Sesuai Demo HRIS IBSW)
+        // 1. User Requester Utama (Karyawan Pemohon Demo)
         User::updateOrCreate(
             ['nik' => '20160163'],
             [
                 'name' => 'TIOPAN INDRA WAHYUDI',
                 'email' => 'tiopan.wahyudi@ibsmulti.com',
                 'password' => Hash::make('password'),
-                'role' => 'Supervisor',
+                'role' => 'Requester',
                 'division' => 'INFORMATION TECHNOLOGY & SAP DIVISION',
-                'position' => 'Application Development Supervisor',
+                'position' => 'Application Development Staff',
                 'gender' => 'Male',
                 'avatar' => 'https://hris.ibsmulti.com/assets/images/avatar_man.png',
             ]
@@ -35,9 +35,9 @@ class UserSeeder extends Seeder
                 'name' => 'Administrator IBSW',
                 'email' => 'admin@ibsmulti.com',
                 'password' => Hash::make('admin123'),
-                'role' => 'Super Admin',
+                'role' => 'Administrator',
                 'division' => 'IT INFRASTRUCTURE & SECURITY',
-                'position' => 'System Administrator',
+                'position' => 'System Administrator (Approver)',
                 'gender' => 'Male',
                 'avatar' => 'https://hris.ibsmulti.com/assets/images/avatar_man.png',
             ]
@@ -50,19 +50,19 @@ class UserSeeder extends Seeder
                 'name' => 'Demo User HRIS',
                 'email' => 'demo@ibsmulti.com',
                 'password' => Hash::make('123456'),
-                'role' => 'Staff',
+                'role' => 'Requester',
                 'division' => 'HUMAN CAPITAL SERVICES',
-                'position' => 'HR Staff',
+                'position' => 'HR Staff (Requester)',
                 'gender' => 'Female',
                 'avatar' => 'https://hris.ibsmulti.com/assets/images/avatar_man.png',
             ]
         );
 
-        // 4. Akun Cepat Sesuai Template Login Perusahaan (Login.jsx)
+        // 4. Akun Hierarki IBS: Requester vs Approver L1, L2, L3, L4
         $templateAccounts = [
             [
                 'nik' => '20230001',
-                'role' => 'Staff',
+                'role' => 'Requester',
                 'name' => 'Fajar Nugraha',
                 'email' => 'test.requester@ibs.test',
                 'position' => 'Requester SCM',
@@ -70,58 +70,58 @@ class UserSeeder extends Seeder
             ],
             [
                 'nik' => '20230002',
-                'role' => 'Supervisor',
+                'role' => 'Asisten Kadiv (L1)',
                 'name' => 'Dwi Handayani, S.T.',
                 'email' => 'test.asisten@ibs.test',
-                'position' => 'Asisten Kadiv (L1)',
+                'position' => 'Asisten Kadiv SCM (L1 Approver)',
                 'division' => 'SUPPLY CHAIN MANAGEMENT',
             ],
             [
                 'nik' => '20230003',
-                'role' => 'Supervisor',
+                'role' => 'Kadiv SCM (L2)',
                 'name' => 'Hendro Prasetyo, S.T.',
                 'email' => 'test.kadiv@ibs.test',
-                'position' => 'Kadiv SCM (L2)',
+                'position' => 'Kadiv SCM (L2 Approver)',
                 'division' => 'SUPPLY CHAIN MANAGEMENT',
             ],
             [
                 'nik' => '20230004',
-                'role' => 'Supervisor',
+                'role' => 'Accounting (L3)',
                 'name' => 'Bambang Sudarsono, S.E.',
                 'email' => 'test.accounting@ibs.test',
-                'position' => 'Accounting (L3)',
+                'position' => 'Accounting Section Head (L3 Approver)',
                 'division' => 'FINANCE & ACCOUNTING',
             ],
             [
                 'nik' => '20230005',
-                'role' => 'Supervisor',
+                'role' => 'Tax (L4)',
                 'name' => 'Citra Anggraini, S.E.',
                 'email' => 'test.tax@ibs.test',
-                'position' => 'Tax (L4)',
+                'position' => 'Tax Specialist (L4 Approver)',
                 'division' => 'FINANCE & TAXATION',
             ],
             [
                 'nik' => '20230006',
-                'role' => 'Supervisor',
+                'role' => 'SAP Team (L5)',
                 'name' => 'Rizky Pratama, M.Kom.',
                 'email' => 'test.sap@ibs.test',
-                'position' => 'SAP Team (L5)',
+                'position' => 'SAP Specialist (L5 Approver)',
                 'division' => 'INFORMATION TECHNOLOGY & SAP',
             ],
             [
                 'nik' => '20230007',
-                'role' => 'Staff',
+                'role' => 'Requester',
                 'name' => 'Dimas Anggara',
                 'email' => 'test.requester.br@ibs.test',
-                'position' => 'Requester (BR)',
+                'position' => 'Requester Project',
                 'division' => 'PROJECT MANAGEMENT',
             ],
             [
                 'nik' => '20230008',
-                'role' => 'Super Admin',
+                'role' => 'Administrator',
                 'name' => 'Admin Testing IBS',
                 'email' => 'admin@ibs.test',
-                'position' => 'System Administrator',
+                'position' => 'System Administrator (Approver)',
                 'division' => 'IT DIVISION',
             ],
         ];
